@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeftIcon } from "../components/icons";
+import { useTelegramUser } from "../hooks/useTelegramUser";
 
 export default function ApplyPage() {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [comment, setComment] = useState("");
   const [status, setStatus] = useState(null); // null | "loading" | "ok" | "error"
+  const { user } = useTelegramUser();
+
+  useEffect(() => {
+    if (!user) return;
+    const fullName = `${user.first_name} ${user.last_name || ""}`.trim();
+    if (fullName) setName(fullName);
+    if (user.username) setUsername(`@${user.username}`);
+  }, [user]);
 
   async function handleSubmit(e) {
     e.preventDefault();

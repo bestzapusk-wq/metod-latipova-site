@@ -1,54 +1,65 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import coursesData from "../data/courses.json";
+import { useTelegramUser } from "../hooks/useTelegramUser";
 
 const COMMUNITY_URL =
   process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://t.me/your_community_link";
 
+const SECRET_LABELS = {
+  4: "Крепкий орешек",
+  5: "На драйве",
+  6: "Глубина",
+  7: "Точка невозврата",
+  8: "Закалённый",
+  9: "Мастер привычек",
+  10: "Несокрушимый",
+  11: "Легенда клуба",
+  12: "Полный апгрейд",
+};
+
 const MONTH_REWARDS = [
   {
     month: 1,
+    secret: false,
+    label: "Разогрев",
     title: 'Трекер "Путь к здоровью"',
-    subtitle: "Чек-лист ежедневных привычек и прогресса.",
     image: "/rewards/month-1.png",
-    unlocked: true,
   },
   {
     month: 2,
+    secret: false,
+    label: "В ритме",
     title: "Консультация с врачом",
-    subtitle: "Личная онлайн-сессия по текущим показателям.",
     image: "/rewards/month-2.png",
-    unlocked: true,
   },
   {
     month: 3,
+    secret: false,
+    label: "Второе дыхание",
     title: "Мини-курс Детокс",
-    subtitle: "Короткая программа мягкого восстановления.",
     image: "/rewards/month-3.png",
-    unlocked: true,
   },
-  {
-    month: 4,
-    title: "Чек-ап энергии",
-    subtitle: "Разбор сна, стресса и фокуса с планом действий.",
-    image: "/rewards/month-4.svg",
-    unlocked: true,
-  },
-  {
-    month: 5,
-    title: "Секретный бонус",
-    subtitle: "Откроется позже",
-    image: "/rewards/secret.png",
-    unlocked: false,
-  },
-  ...Array.from({ length: 7 }, (_, idx) => ({
-    month: idx + 6,
-    title: "Секретный бонус",
-    subtitle: "Откроется позже",
-    image: "/rewards/secret.png",
-    unlocked: false,
-  })),
+  ...Array.from({ length: 9 }, (_, idx) => {
+    const month = idx + 4;
+    return {
+      month,
+      secret: true,
+      label: SECRET_LABELS[month],
+      title: "Секретный бонус",
+      image: "/rewards/secret.png",
+    };
+  }),
 ];
+
+function formatMonthLabel(n) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 14) return `${n} месяцев`;
+  if (mod10 === 1) return `${n} месяц`;
+  if (mod10 >= 2 && mod10 <= 4) return `${n} месяца`;
+  return `${n} месяцев`;
+}
 
 function ImagePlaceholder({ title }) {
   return (
@@ -66,11 +77,29 @@ function ImagePlaceholder({ title }) {
 
 export default function Home() {
   const [isRoadmapOpen, setIsRoadmapOpen] = useState(false);
+  const roadmapSliderRef = useRef(null);
+  const { user, tg } = useTelegramUser();
+
+  const displayName = user
+    ? `${user.first_name} ${user.last_name || ""}`.trim()
+    : "Участник клуба";
+
+  function handleClose() {
+    tg?.close();
+  }
+
+  function handleRoadmapScroll() {
+    const slider = roadmapSliderRef.current;
+    if (!slider) return;
+    slider.scrollBy({ left: slider.clientWidth * 0.8, behavior: "smooth" });
+  }
 
   return (
     <div className="app">
       <div className="topbar">
-        <span className="topbar-action">✕ Закрыть</span>
+        <button type="button" className="topbar-action" onClick={handleClose}>
+          ✕ Закрыть
+        </button>
         <span className="topbar-logo">метод латипова</span>
         <span className="topbar-right">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
@@ -79,14 +108,18 @@ export default function Home() {
       </div>
 
       <div className="profile-shell">
-        {/* Имя/фото можно подтянуть из Telegram.WebApp.initDataUnsafe.user */}
         <div className="profile-card">
           <div className="profile-avatar">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.4" /><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" /></svg>
+            {user?.photo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={user.photo_url} alt="" />
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.4" /><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" /></svg>
+            )}
           </div>
           <div className="profile-main">
-            <div className="profile-name">Алишер | Биохакинг</div>
-            <span className="profile-status">Нонейм до 22.07.2026</span>
+            <div className="profile-name">{displayName}</div>
+            <span className="profile-status">Доступ открыт</span>
           </div>
           <button
             type="button"
@@ -108,28 +141,79 @@ export default function Home() {
             <div className="roadmap-track">
               <div className="roadmap-track-fill" />
             </div>
-            <div className="roadmap-title">Подарки за продление</div>
+            <h2 className="roadmap-title">Подарки за продление</h2>
             <p className="roadmap-subtitle">
               Каждый месяц подписки открывает новый уровень с подарком.
             </p>
-            <div className="roadmap-slider">
+            <div className="roadmap-slider" ref={roadmapSliderRef}>
               {MONTH_REWARDS.map((reward) => (
                 <article
                   key={reward.month}
-                  className={`roadmap-card${reward.unlocked ? "" : " locked"}`}
+                  className={`roadmap-card${reward.secret ? " locked" : ""}`}
                 >
-                  <div className="roadmap-month">{reward.month} месяц</div>
-                  {reward.unlocked ? (
-                    <span className="roadmap-chip">Открыто</span>
-                  ) : (
-                    <span className="roadmap-chip locked">Секрет</span>
-                  )}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={reward.image} alt={reward.title} className="roadmap-image" />
-                  <div className="roadmap-card-title">{reward.title}</div>
-                  <div className="roadmap-card-sub">{reward.subtitle}</div>
+                  <div className="roadmap-card-head">
+                    <div className="roadmap-month">{formatMonthLabel(reward.month)}</div>
+                    <span className={`roadmap-chip${reward.secret ? " locked" : ""}`}>
+                      {reward.label}
+                    </span>
+                    <h3 className="roadmap-card-title">
+                      {reward.secret ? "Секретный бонус" : reward.title}
+                    </h3>
+                  </div>
+                  <div className={`roadmap-image-wrap${reward.secret ? " secret" : ""}`}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={reward.image} alt={reward.title} className="roadmap-image" />
+                    {reward.secret && (
+                      <svg
+                        className="roadmap-lock-icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="var(--accent-dark)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                    )}
+                  </div>
                 </article>
               ))}
+            </div>
+            <div className="roadmap-scroll-hint">
+              <div className="roadmap-scroll-line" aria-hidden="true">
+                {[0, 1, 2].map((i) => (
+                  <span key={i} className="roadmap-scroll-dot">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                  </span>
+                ))}
+              </div>
+              <button
+                type="button"
+                className="roadmap-scroll-btn"
+                onClick={handleRoadmapScroll}
+              >
+                Прокрутите, чтобы увидеть все награды
+                <span className="roadmap-scroll-chevron" aria-hidden="true">
+                  ›
+                </span>
+              </button>
             </div>
           </section>
         )}
