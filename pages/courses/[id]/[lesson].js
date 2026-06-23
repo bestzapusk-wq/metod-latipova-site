@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import coursesData from "../../../data/courses.json";
 import { useBackButton } from "../../../hooks/useBackButton";
+import { useInitData } from "../../../hooks/useInitData";
 
 export function getStaticPaths() {
   const paths = [];
@@ -32,6 +34,18 @@ export function getStaticProps({ params }) {
   };
 }
 
+function formatCommentDate(iso) {
+  try {
+    return new Date(iso).toLocaleDateString("ru-RU", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  } catch {
+    return "";
+  }
+}
+
 export default function LessonPage({
   courseId,
   courseTitle,
@@ -41,6 +55,72 @@ export default function LessonPage({
   next,
 }) {
   useBackButton(true, `/courses/${courseId}`);
+  const initData = useInitData();
+  const lessonKey = `${courseId}-${lessonNumber}`;
+
+  const [comments, setComments] = useState([]);
+  const [commentsStatus, setCommentsStatus] = useState("loading");
+  const [commentBody, setCommentBody] = useState("");
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/comments?lesson=${encodeURIComponent(lessonKey)}`
+        );
+        if (!res.ok) throw new Error("fetch failed");
+
+        const data = await res.json();
+        if (cancelled) return;
+
+        if (!Array.isArray(data) || data.length === 0) {
+          setComments([]);
+          setCommentsStatus("empty");
+        } else {
+          setComments(data);
+          setCommentsStatus("ok");
+        }
+      } catch {
+        if (!cancelled) setCommentsStatus("error");
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lessonKey]);
+
+  async function handleCommentSubmit(e) {
+    e.preventDefault();
+    if (!initData || !commentBody.trim()) return;
+
+    setSubmitStatus("loading");
+
+    try {
+      const res = await fetch("/api/comment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          initData,
+          lessonKey,
+          body: commentBody.trim(),
+        }),
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        setCommentBody("");
+        setSubmitStatus("ok");
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch {
+      setSubmitStatus("error");
+    }
+  }
 
   return (
     <div className="app">
@@ -86,6 +166,68 @@ export default function LessonPage({
           Это был последний урок курса «{courseTitle}». 🎉
         </div>
       )}
+
+      <section className="comments-section">
+        <div className="section-label">Комментарии</div>
+
+        {commentsStatus === "loading" && (
+          <p className="comments-hint">Загружаем комментарии…</p>
+        )}
+        {commentsStatus === "error" && (
+          <p className="comments-hint">Не удалось загрузить комментарии.</p>
+        )}
+        {commentsStatus === "empty" && (
+          <p className="comments-hint">Пока нет комментариев.</p>
+        )}
+        {commentsStatus === "ok" && (
+          <div className="comments-list">
+            {comments.map((comment) => (
+              <article key={comment.id} className="comment-card">
+                <div className="comment-author">{comment.tg_name}</div>
+                <p className="comment-body">{comment.body}</p>
+                <time className="comment-date" dateTime={comment.created_at}>
+                  {formatCommentDate(comment.created_at)}
+                </time>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {initData ? (
+          <form onSubmit={handleCommentSubmit}>
+            <div className="form-field">
+              <textarea
+                className="form-textarea"
+                placeholder="Напишите комментарий…"
+                value={commentBody}
+                onChange={(e) => setCommentBody(e.target.value)}
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={submitStatus === "loading"}
+            >
+              {submitStatus === "loading" ? "Отправляем…" : "Отправить"}
+            </button>
+            {submitStatus === "ok" && (
+              <div className="status-msg ok">
+                Комментарий отправлен на модерацию
+              </div>
+            )}
+            {submitStatus === "error" && (
+              <div className="status-msg error">
+                Не удалось отправить. Попробуйте ещё раз.
+              </div>
+            )}
+          </form>
+        ) : (
+          <p className="comments-hint">
+            Комментарии доступны в приложении Telegram
+          </p>
+        )}
+      </section>
     </div>
   );
 }

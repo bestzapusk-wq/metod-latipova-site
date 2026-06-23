@@ -1,8 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import coursesData from "../data/courses.json";
 import { useTelegramUser } from "../hooks/useTelegramUser";
 import { useBackButton } from "../hooks/useBackButton";
+import { useInitData } from "../hooks/useInitData";
+
+const DEFAULT_UNLOCKED_MONTHS = 0;
 
 const COMMUNITY_URL =
   process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://t.me/your_community_link";
@@ -62,6 +65,14 @@ function formatMonthLabel(n) {
   return `${n} месяцев`;
 }
 
+function getUserInitials(user) {
+  if (!user) return "У";
+  const first = user.first_name?.trim()?.[0] || "";
+  const last = user.last_name?.trim()?.[0] || "";
+  const initials = `${first}${last}`.toUpperCase();
+  return initials || "У";
+}
+
 function ImagePlaceholder({ title }) {
   return (
     <div className="tile-placeholder">
@@ -78,13 +89,43 @@ function ImagePlaceholder({ title }) {
 
 export default function Home() {
   const [isRoadmapOpen, setIsRoadmapOpen] = useState(false);
+  const [unlockedMonths, setUnlockedMonths] = useState(DEFAULT_UNLOCKED_MONTHS);
   const roadmapSliderRef = useRef(null);
   const { user } = useTelegramUser();
+  const initData = useInitData();
   useBackButton(false);
 
   const displayName = user
     ? `${user.first_name} ${user.last_name || ""}`.trim()
     : "Участник клуба";
+
+  useEffect(() => {
+    if (!initData) return;
+
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/unlock", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ initData }),
+        });
+        if (!res.ok || cancelled) return;
+
+        const data = await res.json();
+        if (typeof data.unlockedMonths === "number" && !cancelled) {
+          setUnlockedMonths(data.unlockedMonths);
+        }
+      } catch {
+        // keep fallback
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [initData]);
 
   function handleRoadmapScroll() {
     const slider = roadmapSliderRef.current;
@@ -101,7 +142,9 @@ export default function Home() {
               // eslint-disable-next-line @next/next/no-img-element
               <img src={user.photo_url} alt="" />
             ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.4" /><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" /></svg>
+              <span className="profile-avatar-initials" aria-hidden="true">
+                {getUserInitials(user)}
+              </span>
             )}
           </div>
           <div className="profile-main">
@@ -123,34 +166,40 @@ export default function Home() {
           <section id="roadmap-panel" className="roadmap-panel">
             <div className="roadmap-progress-row">
               <span>Прогресс разблокировки</span>
-              <strong>4 / 12</strong>
+              <strong>{unlockedMonths} / 12</strong>
             </div>
             <div className="roadmap-track">
-              <div className="roadmap-track-fill" />
+              <div
+                className="roadmap-track-fill"
+                style={{ width: `${(unlockedMonths / 12) * 100}%` }}
+              />
             </div>
             <h2 className="roadmap-title">Подарки за продление</h2>
             <p className="roadmap-subtitle">
-              Каждый месяц подписки открывает новый уровень с подарком.
+              Каждые 30 дней подписки открывается новый уровень с подарком.
             </p>
             <div className="roadmap-slider" ref={roadmapSliderRef}>
-              {MONTH_REWARDS.map((reward) => (
+              {MONTH_REWARDS.map((reward) => {
+                const isLocked = reward.month > unlockedMonths;
+
+                return (
                 <article
                   key={reward.month}
-                  className={`roadmap-card${reward.secret ? " locked" : ""}`}
+                  className={`roadmap-card${isLocked ? " locked" : ""}`}
                 >
                   <div className="roadmap-card-head">
                     <div className="roadmap-month">{formatMonthLabel(reward.month)}</div>
-                    <span className={`roadmap-chip${reward.secret ? " locked" : ""}`}>
+                    <span className={`roadmap-chip${isLocked ? " locked" : ""}`}>
                       {reward.label}
                     </span>
                     <h3 className="roadmap-card-title">
-                      {reward.secret ? "Секретный бонус" : reward.title}
+                      {reward.secret || isLocked ? "Секретный бонус" : reward.title}
                     </h3>
                   </div>
-                  <div className={`roadmap-image-wrap${reward.secret ? " secret" : ""}`}>
+                  <div className={`roadmap-image-wrap${isLocked ? " secret" : ""}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={reward.image} alt={reward.title} className="roadmap-image" />
-                    {reward.secret && (
+                    {isLocked && (
                       <svg
                         className="roadmap-lock-icon"
                         width="24"
@@ -169,7 +218,8 @@ export default function Home() {
                     )}
                   </div>
                 </article>
-              ))}
+                );
+              })}
             </div>
             <div className="roadmap-scroll-hint">
               <div className="roadmap-scroll-line" aria-hidden="true">
@@ -218,7 +268,7 @@ export default function Home() {
         </a>
       </div>
 
-      <div className="section-label">Курсы</div>
+      <div className="section-label section-label-programs">Доступные программы</div>
       <div className="courses-grid">
         {coursesData.courses.map((course) => (
           <Link

@@ -9,10 +9,15 @@ export default function App({ Component, pageProps }) {
     tg.ready();
     tg.expand();
 
-    const insetTop = tg.contentSafeAreaInset?.top ?? tg.safeAreaInset?.top ?? 0;
+    const safeTop = tg.safeAreaInset?.top ?? 0;
+    const contentSafeTop = tg.contentSafeAreaInset?.top ?? 0;
+    document.documentElement.style.setProperty(
+      "--tg-safe-area-inset-top",
+      `${safeTop}px`
+    );
     document.documentElement.style.setProperty(
       "--tg-content-safe-area-inset-top",
-      `${insetTop}px`
+      `${contentSafeTop}px`
     );
 
     if (typeof tg.setHeaderColor === "function") {

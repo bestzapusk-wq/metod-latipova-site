@@ -41,12 +41,15 @@ button {
 .app {
   max-width: 480px;
   margin: 0 auto;
-  padding: calc(var(--tg-content-safe-area-inset-top, 0px) + 14px) 16px 48px;
+  padding: calc(
+      var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px) + 56px
+    )
+    16px 48px;
   min-height: 100vh;
 }
 
 .profile-card {
-  margin-top: 14px;
+  margin-top: 0;
   background: var(--surface-muted);
   border-radius: var(--radius);
   padding: 16px;
@@ -65,7 +68,7 @@ button {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--accent-dark);
+  background: var(--accent);
   color: #fff;
   flex-shrink: 0;
   display: flex;
@@ -78,6 +81,16 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.profile-avatar-initials {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  user-select: none;
 }
 
 .profile-name {
@@ -155,7 +168,6 @@ button {
 }
 
 .roadmap-track-fill {
-  width: 33.333%;
   height: 100%;
   border-radius: inherit;
   background: var(--accent);
@@ -382,6 +394,14 @@ button {
   margin: 0 0 12px 2px;
 }
 
+.section-label-programs {
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 14px;
+}
+
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -460,7 +480,7 @@ button {
   font-size: 24px;
   text-transform: uppercase;
   line-height: 1.15;
-  margin: 18px 0 8px;
+  margin: 0 0 8px;
 }
 
 .page-sub {
@@ -553,7 +573,7 @@ button {
 
 /* Страница отдельного урока */
 .lesson-video-hero {
-  margin-top: 14px;
+  margin-top: 0;
 }
 
 .lesson-hero-title {
@@ -667,4 +687,46 @@ button {
 
 .status-msg.error {
   color: #b3493f;
+}
+
+.comments-section {
+  margin-top: 28px;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.comment-card {
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.comment-author {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.comment-body {
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 0 0 6px;
+}
+
+.comment-date {
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.comments-hint {
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin: 0 0 12px;
+  line-height: 1.4;
 }
