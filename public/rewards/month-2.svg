@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="t d">
+  <title id="t">Month 2 doctor consultation</title>
+  <desc id="d">Medical support reward card.</desc>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D7E9FF" />
+      <stop offset="100%" stop-color="#96C4FF" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="26" fill="url(#g)" />
+  <rect x="56" y="62" width="208" height="196" rx="20" fill="#ffffff" opacity="0.9" />
+  <g fill="#2F5F99">
+    <circle cx="160" cy="126" r="34" />
+    <rect x="146" y="104" width="28" height="44" rx="6" fill="#fff" />
+    <rect x="138" y="112" width="44" height="28" rx="6" fill="#fff" />
+  </g>
+  <rect x="94" y="188" width="132" height="12" rx="6" fill="#2F5F99" opacity="0.8" />
+  <rect x="106" y="212" width="108" height="12" rx="6" fill="#2F5F99" opacity="0.55" />
+</svg>

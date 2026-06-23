@@ -4,6 +4,51 @@ import coursesData from "../data/courses.json";
 const COMMUNITY_URL =
   process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://t.me/your_community_link";
 
+const MONTH_REWARDS = [
+  {
+    month: 1,
+    title: 'Трекер "Путь к здоровью"',
+    subtitle: "Чек-лист ежедневных привычек и прогресса.",
+    image: "/rewards/month-1.svg",
+    unlocked: true,
+  },
+  {
+    month: 2,
+    title: "Консультация с врачом",
+    subtitle: "Личная онлайн-сессия по текущим показателям.",
+    image: "/rewards/month-2.svg",
+    unlocked: true,
+  },
+  {
+    month: 3,
+    title: "Мини-курс Детокс",
+    subtitle: "Короткая программа мягкого восстановления.",
+    image: "/rewards/month-3.svg",
+    unlocked: true,
+  },
+  {
+    month: 4,
+    title: "Чек-ап энергии",
+    subtitle: "Разбор сна, стресса и фокуса с планом действий.",
+    image: "/rewards/month-4.svg",
+    unlocked: true,
+  },
+  {
+    month: 5,
+    title: "Секретный бонус",
+    subtitle: "Откроется позже",
+    image: "/rewards/month-5.svg",
+    unlocked: false,
+  },
+  ...Array.from({ length: 7 }, (_, idx) => ({
+    month: idx + 6,
+    title: "Секретный бонус",
+    subtitle: "Откроется позже",
+    image: "",
+    unlocked: false,
+  })),
+];
+
 function ImagePlaceholder({ title }) {
   return (
     <div className="tile-placeholder">
@@ -53,6 +98,72 @@ export default function Home() {
           <span className="action-label">Сообщество</span>
         </a>
       </div>
+
+      <section className="rewards-section">
+        <div className="section-label">Подарки за продление</div>
+        <p className="rewards-subtitle">
+          Каждый месяц открывает новый уровень подарков и поддержку на весь год.
+        </p>
+        <div className="rewards-progress-row">
+          <span>Прогресс разблокировки</span>
+          <strong>4 / 12</strong>
+        </div>
+        <div className="rewards-progress-track">
+          <div className="rewards-progress-fill" />
+        </div>
+
+        <details className="rewards-video">
+          <summary>
+            Видео: перспектива 12 месяцев в клубе
+            <span className="rewards-video-hint">Нажмите, чтобы развернуть</span>
+          </summary>
+          <div className="rewards-video-body">
+            <iframe
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              title="Перспектива годовой работы"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        </details>
+
+        <div className="rewards-grid">
+          {MONTH_REWARDS.map((reward) => (
+            <article
+              key={reward.month}
+              className={`reward-card${reward.unlocked ? "" : " locked"}`}
+            >
+              <header className="reward-head">
+                <span>{reward.month} месяц</span>
+                <small>{reward.unlocked ? "Открыто" : "Секрет"}</small>
+              </header>
+              {reward.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={reward.image} alt={reward.title} className="reward-image" />
+              ) : (
+                <div className="reward-image reward-image-placeholder">
+                  <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="3" y="11" width="18" height="10" rx="2" />
+                    <path d="M7 11V8a5 5 0 0 1 10 0v3" />
+                  </svg>
+                </div>
+              )}
+              <div className="reward-title">{reward.title}</div>
+              <div className="reward-sub">{reward.subtitle}</div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <div className="section-label">Курсы</div>
       <div className="courses-grid">

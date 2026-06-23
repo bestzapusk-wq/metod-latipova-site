@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="t d">
+  <title id="t">Month 1 health tracker</title>
+  <desc id="d">Habit tracking reward card.</desc>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CFF3D4" />
+      <stop offset="100%" stop-color="#8AD4A3" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="26" fill="url(#g)" />
+  <rect x="42" y="56" width="236" height="208" rx="18" fill="#fff" opacity="0.84" />
+  <g fill="#1B5C38">
+    <rect x="70" y="96" width="180" height="12" rx="6" />
+    <rect x="70" y="126" width="148" height="12" rx="6" opacity="0.65" />
+    <rect x="70" y="156" width="180" height="12" rx="6" opacity="0.65" />
+  </g>
+  <g stroke="#1B5C38" stroke-width="10" stroke-linecap="round">
+    <path d="M90 214l26 24 52-54" fill="none" />
+  </g>
+</svg>

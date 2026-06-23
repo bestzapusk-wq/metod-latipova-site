@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="t d">
+  <title id="t">Month 3 detox mini course</title>
+  <desc id="d">Detox training reward card.</desc>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFEFCB" />
+      <stop offset="100%" stop-color="#FFD586" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="26" fill="url(#g)" />
+  <rect x="46" y="56" width="228" height="208" rx="18" fill="#fff" opacity="0.86" />
+  <g stroke="#915E00" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M124 184c8-24 26-44 52-56" />
+    <path d="M138 126c18 4 32 16 42 34" />
+    <path d="M116 146c14-18 36-30 62-30" />
+  </g>
+  <circle cx="160" cy="196" r="16" fill="#915E00" opacity="0.75" />
+</svg>

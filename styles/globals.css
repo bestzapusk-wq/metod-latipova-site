@@ -84,19 +84,20 @@ button {
   margin-top: 14px;
   background: var(--surface-muted);
   border-radius: var(--radius);
-  padding: 14px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   margin-bottom: 20px;
+  border: 1px solid #e0e8dc;
 }
 
 .profile-avatar {
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: #dfe6db;
-  color: var(--ink-dim);
+  background: var(--accent-dark);
+  color: #fff;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -104,8 +105,9 @@ button {
 }
 
 .profile-name {
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .profile-status {
@@ -124,43 +126,200 @@ button {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
 
 .action-btn {
-  background: var(--surface-muted);
+  background: var(--accent-dark);
   border-radius: var(--radius);
-  padding: 16px 8px 12px;
+  padding: 20px 10px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 9px;
+  gap: 11px;
   cursor: pointer;
   border: none;
   text-align: center;
 }
 
 .action-icon {
-  width: 24px;
-  height: 24px;
-  color: var(--accent);
+  width: 28px;
+  height: 28px;
+  color: #fff;
 }
 
 .action-label {
-  font-size: 11px;
+  font-family: var(--font-display);
+  font-size: 11.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.2px;
-  color: var(--ink);
+  letter-spacing: 0.3px;
+  color: #fff;
+}
+
+/* Блок годовых подарков */
+.rewards-section {
+  margin-bottom: 26px;
+}
+
+.rewards-subtitle {
+  margin: 0 0 10px;
+  color: var(--ink-dim);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.rewards-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.rewards-progress-row strong {
+  font-family: var(--font-display);
+  font-size: 13px;
+}
+
+.rewards-progress-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #deeadf;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.rewards-progress-fill {
+  width: 33.333%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+}
+
+.rewards-video {
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.rewards-video summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 14px 12px;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rewards-video summary::-webkit-details-marker {
+  display: none;
+}
+
+.rewards-video-hint {
+  color: var(--ink-dim);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.rewards-video-body {
+  border-top: 1px solid var(--line);
+}
+
+.rewards-video-body iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  display: block;
+}
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.reward-card {
+  background: #f2f7f1;
+  border-radius: var(--radius);
+  padding: 12px;
+  border: 1px solid #dce7db;
+}
+
+.reward-card.locked {
+  background: #f5f6f5;
+  border-color: #e4e7e4;
+}
+
+.reward-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 9px;
+}
+
+.reward-head span {
+  font-family: var(--font-display);
+  font-size: 12px;
+}
+
+.reward-head small {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #dff0e3;
+  color: var(--accent-dark);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.reward-card.locked .reward-head small {
+  background: #e7eaeb;
+  color: #6f7a73;
+}
+
+.reward-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 9px;
+}
+
+.reward-image-placeholder {
+  background: #ecf0ec;
+  color: #8f9b94;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reward-title {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.reward-sub {
+  font-size: 12px;
+  color: var(--ink-dim);
+  line-height: 1.35;
 }
 
 /* Сетка курсов — плитки с картинкой на всю площадь */
 .section-label {
-  font-size: 11px;
+  font-family: var(--font-display);
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--ink-dim);
+  letter-spacing: 0.6px;
+  color: var(--ink);
   margin: 0 0 12px 2px;
 }
 
@@ -262,25 +421,93 @@ button {
   line-height: 1.6;
 }
 
-.lesson-card {
+/* Список уроков курса — превью + название, без встроенного плеера */
+.lesson-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.lesson-row:last-child {
+  border-bottom: none;
+}
+
+.lesson-row-thumb {
+  position: relative;
+  width: 84px;
+  height: 56px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #e3e8e0;
+  flex-shrink: 0;
+}
+
+.lesson-row-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lesson-row-thumb-empty {
+  width: 100%;
+  height: 100%;
+}
+
+.lesson-row-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(22, 36, 27, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lesson-row-title {
+  flex: 1;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.lesson-row-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--ink-dim);
+  flex-shrink: 0;
+}
+
+.next-lesson-row {
   background: var(--card);
   border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-bottom: none;
+  margin-bottom: 8px;
 }
 
-.lesson-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
-  gap: 8px;
+/* Страница отдельного урока */
+.lesson-video-hero {
+  margin-top: 14px;
 }
 
-.lesson-card-title {
+.lesson-hero-title {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 19px;
   line-height: 1.3;
+  margin: 16px 0 4px;
+}
+
+.lesson-hero-meta {
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin: 0 0 22px;
 }
 
 .lesson-video {
