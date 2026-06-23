@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import coursesData from "../data/courses.json";
 
@@ -9,21 +10,21 @@ const MONTH_REWARDS = [
     month: 1,
     title: 'Трекер "Путь к здоровью"',
     subtitle: "Чек-лист ежедневных привычек и прогресса.",
-    image: "/rewards/month-1.svg",
+    image: "/rewards/month-1.png",
     unlocked: true,
   },
   {
     month: 2,
     title: "Консультация с врачом",
     subtitle: "Личная онлайн-сессия по текущим показателям.",
-    image: "/rewards/month-2.svg",
+    image: "/rewards/month-2.png",
     unlocked: true,
   },
   {
     month: 3,
     title: "Мини-курс Детокс",
     subtitle: "Короткая программа мягкого восстановления.",
-    image: "/rewards/month-3.svg",
+    image: "/rewards/month-3.png",
     unlocked: true,
   },
   {
@@ -37,14 +38,14 @@ const MONTH_REWARDS = [
     month: 5,
     title: "Секретный бонус",
     subtitle: "Откроется позже",
-    image: "/rewards/month-5.svg",
+    image: "/rewards/secret.png",
     unlocked: false,
   },
   ...Array.from({ length: 7 }, (_, idx) => ({
     month: idx + 6,
     title: "Секретный бонус",
     subtitle: "Откроется позже",
-    image: "",
+    image: "/rewards/secret.png",
     unlocked: false,
   })),
 ];
@@ -64,6 +65,8 @@ function ImagePlaceholder({ title }) {
 }
 
 export default function Home() {
+  const [isRoadmapOpen, setIsRoadmapOpen] = useState(false);
+
   return (
     <div className="app">
       <div className="topbar">
@@ -75,16 +78,61 @@ export default function Home() {
         </span>
       </div>
 
-      {/* Карточка профиля — пока статичная, без проверки подписки.
-          Имя/фото можно подтянуть из Telegram.WebApp.initDataUnsafe.user, когда понадобится. */}
-      <div className="profile-card">
-        <div className="profile-avatar">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.4" /><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" /></svg>
+      <div className="profile-shell">
+        {/* Имя/фото можно подтянуть из Telegram.WebApp.initDataUnsafe.user */}
+        <div className="profile-card">
+          <div className="profile-avatar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.4" /><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" /></svg>
+          </div>
+          <div className="profile-main">
+            <div className="profile-name">Алишер | Биохакинг</div>
+            <span className="profile-status">Нонейм до 22.07.2026</span>
+          </div>
+          <button
+            type="button"
+            className={`profile-expand${isRoadmapOpen ? " open" : ""}`}
+            onClick={() => setIsRoadmapOpen((prev) => !prev)}
+            aria-expanded={isRoadmapOpen}
+            aria-controls="roadmap-panel"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+          </button>
         </div>
-        <div>
-          <div className="profile-name">Участник клуба</div>
-          <span className="profile-status">Доступ открыт</span>
-        </div>
+
+        {isRoadmapOpen && (
+          <section id="roadmap-panel" className="roadmap-panel">
+            <div className="roadmap-progress-row">
+              <span>Прогресс разблокировки</span>
+              <strong>4 / 12</strong>
+            </div>
+            <div className="roadmap-track">
+              <div className="roadmap-track-fill" />
+            </div>
+            <div className="roadmap-title">Подарки за продление</div>
+            <p className="roadmap-subtitle">
+              Каждый месяц подписки открывает новый уровень с подарком.
+            </p>
+            <div className="roadmap-slider">
+              {MONTH_REWARDS.map((reward) => (
+                <article
+                  key={reward.month}
+                  className={`roadmap-card${reward.unlocked ? "" : " locked"}`}
+                >
+                  <div className="roadmap-month">{reward.month} месяц</div>
+                  {reward.unlocked ? (
+                    <span className="roadmap-chip">Открыто</span>
+                  ) : (
+                    <span className="roadmap-chip locked">Секрет</span>
+                  )}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={reward.image} alt={reward.title} className="roadmap-image" />
+                  <div className="roadmap-card-title">{reward.title}</div>
+                  <div className="roadmap-card-sub">{reward.subtitle}</div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       <div className="actions-grid">
@@ -98,72 +146,6 @@ export default function Home() {
           <span className="action-label">Сообщество</span>
         </a>
       </div>
-
-      <section className="rewards-section">
-        <div className="section-label">Подарки за продление</div>
-        <p className="rewards-subtitle">
-          Каждый месяц открывает новый уровень подарков и поддержку на весь год.
-        </p>
-        <div className="rewards-progress-row">
-          <span>Прогресс разблокировки</span>
-          <strong>4 / 12</strong>
-        </div>
-        <div className="rewards-progress-track">
-          <div className="rewards-progress-fill" />
-        </div>
-
-        <details className="rewards-video">
-          <summary>
-            Видео: перспектива 12 месяцев в клубе
-            <span className="rewards-video-hint">Нажмите, чтобы развернуть</span>
-          </summary>
-          <div className="rewards-video-body">
-            <iframe
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              title="Перспектива годовой работы"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
-          </div>
-        </details>
-
-        <div className="rewards-grid">
-          {MONTH_REWARDS.map((reward) => (
-            <article
-              key={reward.month}
-              className={`reward-card${reward.unlocked ? "" : " locked"}`}
-            >
-              <header className="reward-head">
-                <span>{reward.month} месяц</span>
-                <small>{reward.unlocked ? "Открыто" : "Секрет"}</small>
-              </header>
-              {reward.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={reward.image} alt={reward.title} className="reward-image" />
-              ) : (
-                <div className="reward-image reward-image-placeholder">
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="3" y="11" width="18" height="10" rx="2" />
-                    <path d="M7 11V8a5 5 0 0 1 10 0v3" />
-                  </svg>
-                </div>
-              )}
-              <div className="reward-title">{reward.title}</div>
-              <div className="reward-sub">{reward.subtitle}</div>
-            </article>
-          ))}
-        </div>
-      </section>
 
       <div className="section-label">Курсы</div>
       <div className="courses-grid">

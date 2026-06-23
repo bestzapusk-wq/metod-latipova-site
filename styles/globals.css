@@ -92,6 +92,10 @@ button {
   border: 1px solid #e0e8dc;
 }
 
+.profile-shell {
+  margin-bottom: 18px;
+}
+
 .profile-avatar {
   width: 52px;
   height: 52px;
@@ -107,7 +111,7 @@ button {
 .profile-name {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 .profile-status {
@@ -119,6 +123,159 @@ button {
   font-weight: 700;
   padding: 2px 9px;
   border-radius: 999px;
+}
+
+.profile-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-expand {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: #e1ecdf;
+  color: var(--accent-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.profile-expand.open {
+  transform: rotate(180deg);
+}
+
+.roadmap-panel {
+  margin-top: -8px;
+  background: #111;
+  color: #f2f2f2;
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 14px 12px 12px;
+  overflow: hidden;
+  border: 1px solid #1f1f1f;
+  border-top: none;
+}
+
+.roadmap-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #d6d6d6;
+  margin-bottom: 8px;
+}
+
+.roadmap-progress-row strong {
+  color: #f3ef46;
+  font-family: var(--font-display);
+  font-size: 13px;
+}
+
+.roadmap-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #343434;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.roadmap-track-fill {
+  width: 33.333%;
+  height: 100%;
+  border-radius: inherit;
+  background: #f3ef46;
+}
+
+.roadmap-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.roadmap-subtitle {
+  margin: 0 0 14px;
+  color: #cecece;
+  font-size: 13px;
+  line-height: 1.4;
+  max-width: 270px;
+}
+
+.roadmap-slider {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+
+.roadmap-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.roadmap-card {
+  min-width: 154px;
+  max-width: 154px;
+  background: #171717;
+  border: 1px solid #2b2b2b;
+  border-radius: 14px;
+  padding: 10px;
+  scroll-snap-align: start;
+}
+
+.roadmap-card.locked {
+  background: #151515;
+}
+
+.roadmap-month {
+  font-family: var(--font-display);
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.roadmap-chip {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #f3ef46;
+  color: #252525;
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.roadmap-chip.locked {
+  background: #393939;
+  color: #d1d1d1;
+}
+
+.roadmap-image {
+  width: 100%;
+  height: 96px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 10px;
+  background: #0f0f0f;
+  margin-bottom: 8px;
+}
+
+.roadmap-card-title {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.roadmap-card-sub {
+  font-size: 12px;
+  line-height: 1.3;
+  color: #bcbcbc;
 }
 
 /* Кнопки действий */
@@ -155,161 +312,6 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.3px;
   color: #fff;
-}
-
-/* Блок годовых подарков */
-.rewards-section {
-  margin-bottom: 26px;
-}
-
-.rewards-subtitle {
-  margin: 0 0 10px;
-  color: var(--ink-dim);
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.rewards-progress-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.rewards-progress-row strong {
-  font-family: var(--font-display);
-  font-size: 13px;
-}
-
-.rewards-progress-track {
-  height: 8px;
-  border-radius: 999px;
-  background: #deeadf;
-  overflow: hidden;
-  margin-bottom: 14px;
-}
-
-.rewards-progress-fill {
-  width: 33.333%;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--accent-dark), var(--accent));
-}
-
-.rewards-video {
-  margin-bottom: 14px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface-muted);
-  overflow: hidden;
-}
-
-.rewards-video summary {
-  cursor: pointer;
-  list-style: none;
-  padding: 14px 14px 12px;
-  font-weight: 700;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.rewards-video summary::-webkit-details-marker {
-  display: none;
-}
-
-.rewards-video-hint {
-  color: var(--ink-dim);
-  font-weight: 400;
-  font-size: 12px;
-}
-
-.rewards-video-body {
-  border-top: 1px solid var(--line);
-}
-
-.rewards-video-body iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 0;
-  display: block;
-}
-
-.rewards-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.reward-card {
-  background: #f2f7f1;
-  border-radius: var(--radius);
-  padding: 12px;
-  border: 1px solid #dce7db;
-}
-
-.reward-card.locked {
-  background: #f5f6f5;
-  border-color: #e4e7e4;
-}
-
-.reward-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 9px;
-}
-
-.reward-head span {
-  font-family: var(--font-display);
-  font-size: 12px;
-}
-
-.reward-head small {
-  padding: 2px 7px;
-  border-radius: 999px;
-  background: #dff0e3;
-  color: var(--accent-dark);
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.reward-card.locked .reward-head small {
-  background: #e7eaeb;
-  color: #6f7a73;
-}
-
-.reward-image {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 12px;
-  object-fit: cover;
-  display: block;
-  margin-bottom: 9px;
-}
-
-.reward-image-placeholder {
-  background: #ecf0ec;
-  color: #8f9b94;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.reward-title {
-  font-weight: 700;
-  font-size: 13px;
-  line-height: 1.3;
-  margin-bottom: 4px;
-}
-
-.reward-sub {
-  font-size: 12px;
-  color: var(--ink-dim);
-  line-height: 1.35;
 }
 
 /* Сетка курсов — плитки с картинкой на всю площадь */
