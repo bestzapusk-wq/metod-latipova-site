@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import coursesData from "../data/courses.json";
 import { useTelegramUser } from "../hooks/useTelegramUser";
+import { useBackButton } from "../hooks/useBackButton";
 
 const COMMUNITY_URL =
   process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://t.me/your_community_link";
@@ -78,15 +79,12 @@ function ImagePlaceholder({ title }) {
 export default function Home() {
   const [isRoadmapOpen, setIsRoadmapOpen] = useState(false);
   const roadmapSliderRef = useRef(null);
-  const { user, tg } = useTelegramUser();
+  const { user } = useTelegramUser();
+  useBackButton(false);
 
   const displayName = user
     ? `${user.first_name} ${user.last_name || ""}`.trim()
     : "Участник клуба";
-
-  function handleClose() {
-    tg?.close();
-  }
 
   function handleRoadmapScroll() {
     const slider = roadmapSliderRef.current;
@@ -96,17 +94,6 @@ export default function Home() {
 
   return (
     <div className="app">
-      <div className="topbar">
-        <button type="button" className="topbar-action" onClick={handleClose}>
-          ✕ Закрыть
-        </button>
-        <span className="topbar-logo">метод латипова</span>
-        <span className="topbar-right">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="19" cy="12" r="1.6" /></svg>
-        </span>
-      </div>
-
       <div className="profile-shell">
         <div className="profile-card">
           <div className="profile-avatar">

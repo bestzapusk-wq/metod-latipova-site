@@ -1,5 +1,6 @@
 import Link from "next/link";
 import coursesData from "../../../data/courses.json";
+import { useBackButton } from "../../../hooks/useBackButton";
 
 export function getStaticPaths() {
   const paths = [];
@@ -39,20 +40,10 @@ export default function LessonPage({
   totalLessons,
   next,
 }) {
+  useBackButton(true, `/courses/${courseId}`);
+
   return (
     <div className="app">
-      <div className="topbar">
-        <Link href={`/courses/${courseId}`} className="topbar-action">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
-          {courseTitle}
-        </Link>
-        <span className="topbar-logo">метод латипова</span>
-        <span className="topbar-right">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="19" cy="12" r="1.6" /></svg>
-        </span>
-      </div>
-
       <div className="lesson-video lesson-video-hero">
         {lesson.youtubeId ? (
           <iframe

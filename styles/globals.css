@@ -41,53 +41,10 @@ button {
 .app {
   max-width: 480px;
   margin: 0 auto;
-  padding: 0 16px 48px;
+  padding: calc(var(--tg-content-safe-area-inset-top, 0px) + 14px) 16px 48px;
   min-height: 100vh;
 }
 
-/* Верхняя шапка — повторяет шапку Telegram WebApp для визуальной целостности */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 4px;
-}
-
-.topbar-action {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--ink-dim);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-button.topbar-action {
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.topbar-logo {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 15px;
-  color: var(--accent);
-  text-transform: lowercase;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: var(--ink-dim);
-}
-
-/* Карточка профиля */
 .profile-card {
   margin-top: 14px;
   background: var(--surface-muted);

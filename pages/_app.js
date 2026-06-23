@@ -4,10 +4,26 @@ import "../styles/globals.css";
 export default function App({ Component, pageProps }) {
   useEffect(() => {
     const tg = typeof window !== "undefined" && window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
+    if (!tg) return;
+
+    tg.ready();
+    tg.expand();
+
+    const insetTop = tg.contentSafeAreaInset?.top ?? tg.safeAreaInset?.top ?? 0;
+    document.documentElement.style.setProperty(
+      "--tg-content-safe-area-inset-top",
+      `${insetTop}px`
+    );
+
+    if (typeof tg.setHeaderColor === "function") {
+      tg.setHeaderColor("#ffffff");
     }
+
+    if (typeof tg.setBackgroundColor === "function") {
+      tg.setBackgroundColor("#ffffff");
+    }
+
+    tg.disableVerticalSwipes?.();
   }, []);
 
   return <Component {...pageProps} />;
