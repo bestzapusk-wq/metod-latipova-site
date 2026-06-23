@@ -1,0 +1,384 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=PT+Sans:wght@400;700&display=swap');
+
+:root {
+  --bg: #ffffff;
+  --surface-muted: #f0f4ee;
+  --card: #f4f6f2;
+  --ink: #16241b;
+  --ink-dim: #79847b;
+  --accent: #2e7d4f;
+  --accent-dark: #1b5c38;
+  --accent-pale: #e3f2e9;
+  --line: #e7e5dd;
+  --radius: 18px;
+
+  --font-display: "Unbounded", sans-serif;
+  --font-body: "PT Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+  min-height: 100vh;
+}
+
+/* Верхняя шапка — повторяет шапку Telegram WebApp для визуальной целостности */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+}
+
+.topbar-action {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.topbar-logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--accent);
+  text-transform: lowercase;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink-dim);
+}
+
+/* Карточка профиля */
+.profile-card {
+  margin-top: 14px;
+  background: var(--surface-muted);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.profile-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #dfe6db;
+  color: var(--ink-dim);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-name {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.profile-status {
+  display: inline-block;
+  margin-top: 5px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+
+/* Кнопки действий */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.action-btn {
+  background: var(--surface-muted);
+  border-radius: var(--radius);
+  padding: 16px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+}
+
+.action-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--accent);
+}
+
+.action-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  color: var(--ink);
+}
+
+/* Сетка курсов — плитки с картинкой на всю площадь */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ink-dim);
+  margin: 0 0 12px 2px;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.course-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface-muted);
+  display: block;
+}
+
+.course-tile.no-cover {
+  border: 1px dashed #c9d4c4;
+}
+
+.course-tile-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #9aa79a;
+  text-align: center;
+  padding: 10px;
+}
+
+.tile-placeholder svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tile-placeholder span {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.tile-placeholder strong {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+/* Страница курса */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-dim);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 24px;
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin: 18px 0 8px;
+}
+
+.page-sub {
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+  margin: 0 0 18px;
+}
+
+.empty-state {
+  background: var(--surface-muted);
+  border-radius: var(--radius);
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--ink-dim);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.lesson-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.lesson-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.lesson-card-title {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.lesson-video {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #e3e8e0;
+}
+
+.lesson-video iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  border: none;
+}
+
+.lesson-video-placeholder {
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-dim);
+  font-size: 13px;
+  padding: 16px;
+  text-align: center;
+}
+
+/* Форма заявки */
+.page-intro {
+  color: var(--ink-dim);
+  margin-top: -8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-field {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin-bottom: 6px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-size: 15px;
+  font-family: var(--font-body);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-pale);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.submit-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+}
+
+.status-msg {
+  margin-top: 14px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.status-msg.ok {
+  color: var(--accent-dark);
+}
+
+.status-msg.error {
+  color: #b3493f;
+}
